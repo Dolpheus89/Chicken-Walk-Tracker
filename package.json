@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "biome": "^0.3.3"
+  },
+  "name": "chicken-walk-tracker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "format": "npx @biomejs/biome format --write './server'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dolpheus89/Chicken-Walk-Tracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Dolpheus89/Chicken-Walk-Tracker/issues"
+  },
+  "homepage": "https://github.com/Dolpheus89/Chicken-Walk-Tracker#readme",
+  "description": ""
+}
