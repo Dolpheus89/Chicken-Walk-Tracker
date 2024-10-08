@@ -7,7 +7,7 @@ export interface User {
 	profile_image:string
 }
 
-export const Users = {
+export const User = {
 	create: (credential: User): Promise<void> => {
 		const query =
 			"INSERT INTO users ( name , email, password , profile_image) VALUES ( ? , ? , ? , ?)";

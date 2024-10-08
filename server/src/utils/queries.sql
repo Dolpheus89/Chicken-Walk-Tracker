@@ -3,7 +3,7 @@
     name TEXT,
     email TEXT UNIQUE,
     password TEXT,
-    profile_image TEXT  -- Colonne pour stocker l'URL de l'image de profil
+    profile_image TEXT  
     );
 
   CREATE TABLE IF NOT EXISTS chickens (
