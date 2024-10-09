@@ -12,6 +12,7 @@
     name TEXT,
     age INTEGER,
     breed TEXT,
+    chicken_image TEXT,  
     FOREIGN KEY (user_id) REFERENCES users(id)
   );
 

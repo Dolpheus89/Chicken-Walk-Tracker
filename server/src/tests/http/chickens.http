@@ -1,0 +1,10 @@
+POST http://localhost:3350/chickens/create/1
+Content-Type: application/json
+
+{
+    "name": "Isabelle",
+    "age": "33",
+    "breed": "Bresse-Gauloise"
+}
+
+###

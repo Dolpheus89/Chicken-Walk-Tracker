@@ -63,3 +63,8 @@ export const login = async (req: Request, res: Response):Promise<void> => {
 	
 	  res.status(200).json({ token });
 }
+
+
+export const logout = (req: Request, res: Response) => {
+	res.status(200).json({ message: 'Logged out successfully' });
+}
