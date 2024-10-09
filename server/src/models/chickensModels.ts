@@ -24,4 +24,19 @@ export const Chicken = {
 			});
 		});
 	},
+
+    findChickensByuserId: (user_id:number): Promise<Chicken[]> => {
+        const query ="SELECT name , age, breed, chicken_image from chickens WHERE user_id = ?";
+        const params = [user_id];
+
+        return new Promise((resolve, reject) => {
+			db.all(query, params, (err, rows) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(rows as Chicken[]);
+				}
+			});
+		});
+    }
 };
