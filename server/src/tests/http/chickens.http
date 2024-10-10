@@ -10,3 +10,19 @@ Content-Type: application/json
 ###
 
 GET http://localhost:3350/chickens/1
+
+###
+
+PUT http://localhost:3350/chickens/update/1
+Content-Type: application/json
+
+{
+    "name": "Isabella",
+    "age": "30",
+    "breed": "Bresse-Gauloise"
+}
+
+###
+
+
+DELETE  http://localhost:3350/chickens/delete/1

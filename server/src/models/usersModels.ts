@@ -4,14 +4,19 @@ export interface User {
 	name: string;
 	email: string;
 	password: string;
-	profile_image:string
+	profile_image: string;
 }
 
 export const User = {
 	create: (credential: User): Promise<void> => {
 		const query =
 			"INSERT INTO users ( name , email, password , profile_image) VALUES ( ? , ? , ? , ?)";
-		const params = [credential.name, credential.email, credential.password, credential.profile_image ];
+		const params = [
+			credential.name,
+			credential.email,
+			credential.password,
+			credential.profile_image,
+		];
 
 		return new Promise((resolve, reject) => {
 			db.run(query, params, (err) => {

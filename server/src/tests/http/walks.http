@@ -1,0 +1,11 @@
+POST http://localhost:3350/walks/create/
+Content-Type: application/json
+
+{
+   	"user_id": "1",
+    "chicken_id":"1",
+    "title":"balade du 01/10/2022",
+	"location": "1234",
+	"duration": "1234",
+	"notes":"super cool"
+}
