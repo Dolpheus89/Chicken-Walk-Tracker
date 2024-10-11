@@ -2,7 +2,8 @@ import { Request, Response } from "express";
 import { Walk } from "../models/walksModels";
 
 export const create = async (req: Request, res: Response): Promise<void> => {
-	const { title, location, duration, notes, user_id, chicken_id } = req.body;
+	const { title, location, duration, notes, distance, user_id, chicken_id } =
+		req.body;
 
 	try {
 		await Walk.create({
@@ -10,6 +11,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
 			location: location,
 			duration: duration,
 			notes: notes,
+			distance: distance,
 			user_id: parseInt(user_id),
 			chicken_id: chicken_id,
 		});

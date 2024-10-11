@@ -6,18 +6,20 @@ export interface Walk {
 	title: string;
 	location: number;
 	duration: number;
+	distance: number;
 	notes: string;
 }
 
 export const Walk = {
 	create: (walk: Walk): Promise<void> => {
 		const query =
-			"INSERT INTO walks ( title , location, duration, notes, user_id, chicken_id) VALUES ( ? , ? , ? , ?, ?, ?)";
+			"INSERT INTO walks ( title , location, duration, notes, distance, user_id, chicken_id) VALUES ( ? , ? , ?, ? , ?, ?, ?)";
 		const params = [
 			walk.title,
 			walk.location,
 			walk.duration,
 			walk.notes,
+			walk.distance,
 			walk.user_id,
 			walk.chicken_id,
 		];
