@@ -1,14 +1,23 @@
-import React, { createContext, useState, useEffect, ReactNode } from "react";
-import * as SecureStore from "expo-secure-store";
+import React, { createContext, useState, useContext, ReactNode } from "react";
 
-interface AuthContextType {
-	user: any;
-	token: string | null;
-	signIn: (token: string) => Promise<void>;
-	signOut: () => Promise<void>;
+interface User {
+	id: string;
+	email: string;
+	name: string;
+	profile_image: string;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export interface AuthContextType {
+	user: User | null;
+	token: string | null;
+	setUser: (user: User | null) => void;
+	signIn: (token: string, userData: User) => void;
+	signOut: () => void;
+}
+
+export const AuthContext = createContext<AuthContextType | undefined>(
+	undefined,
+);
 
 interface AuthProviderProps {
 	children: ReactNode;
@@ -16,43 +25,28 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 	const [token, setToken] = useState<string | null>(null);
-	const [user, setUser] = useState(null);
+	const [user, setUser] = useState<User | null>(null);
 
-	useEffect(() => {
-		const loadToken = async () => {
-			try {
-				const storedToken = await SecureStore.getItemAsync("token");
-				if (storedToken) {
-					setToken(storedToken);
-				}
-			} catch (error) {
-				console.error("Error loading token:", error);
-			}
-		};
-
-		loadToken();
-	}, []);
-
-	const signIn = async (newToken: string) => {
-		await SecureStore.setItemAsync("token", newToken);
+	const signIn = (newToken: string, userData: User) => {
 		setToken(newToken);
+		setUser(userData);
 	};
 
-	const signOut = async () => {
-		await SecureStore.deleteItemAsync("token");
+	const signOut = () => {
 		setToken(null);
+		setUser(null);
 	};
 
 	return (
-		<AuthContext.Provider value={{ user, token, signIn, signOut }}>
+		<AuthContext.Provider value={{ user, token, setUser, signIn, signOut }}>
 			{children}
 		</AuthContext.Provider>
 	);
 };
 
-export const useAuth = (): AuthContextType => {
-	const context = React.useContext(AuthContext);
-	if (!context) {
+export const useAuth = () => {
+	const context = useContext(AuthContext);
+	if (context === undefined) {
 		throw new Error("useAuth must be used within an AuthProvider");
 	}
 	return context;

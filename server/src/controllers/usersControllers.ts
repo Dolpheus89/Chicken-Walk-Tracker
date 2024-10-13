@@ -69,7 +69,9 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 			expiresIn: "24h",
 		});
 
-		res.status(200).json({ token });
+		const { password: _, ...userData } = user;
+
+		res.status(200).json({ token, userData });
 	} catch (error) {
 		console.error("Error during login:", error);
 		res.status(500).json({ message: "An error occurred while logging in" });

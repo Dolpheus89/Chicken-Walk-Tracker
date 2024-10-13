@@ -4,10 +4,15 @@ import { useAuth } from "../../context/AuthContext";
 
 export default function AppLayout() {
 	const { user } = useAuth();
+	console.log(user);
 
 	if (user === null) {
 		return <Redirect href="/" />;
 	}
 
-	return <Stack />;
+	return (
+		<Stack>
+			<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+		</Stack>
+	);
 }

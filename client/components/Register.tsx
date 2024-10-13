@@ -1,35 +1,35 @@
 import { styles } from "@/styles/global";
 import { View, TextInput } from "react-native";
-import Button from "./Button";
-import { Credentials } from "./Register";
-import { useState, useContext } from "react";
-import { router } from "expo-router";
+import { useState } from "react";
 import axios from "axios";
+import Button from "./Button";
 import { API_URL } from "@/variables";
-import { AuthContext, AuthContextType } from "@/context/AuthContext";
 
-export default function LogIn() {
-	const { signIn, setUser } = useContext(AuthContext) as AuthContextType;
+export interface Credentials {
+	name?: string;
+	email: string;
+	password: string;
+}
+
+export default function Register() {
 	const [credentials, setCredentials] = useState<Credentials>({
+		name: "",
 		email: "",
 		password: "",
 	});
 	const handleSubmit = async () => {
 		try {
-			const response = await axios.post(`${API_URL}users/login`, credentials);
-			const { token, userData } = response.data;
-			signIn(token, userData);
-			setUser(userData);
-			setCredentials({ password: "", email: "" });
-			router.replace("/home");
+			await axios.post(`${API_URL}users/register`, credentials);
+			setCredentials({ name: "", password: "", email: "" });
+			alert("Registration successful!");
 		} catch (err) {
 			if (axios.isAxiosError(err)) {
 				const errorMessage =
 					err.response?.data?.message ||
 					"An unknown error occurred. Please try again later.";
-				alert(`Login failed: ${errorMessage}`);
+				alert(`Registration failed: ${errorMessage}`);
 			} else {
-				alert("Login failed: An unexpected error occurred.");
+				alert("Registration failed: An unexpected error occurred.");
 			}
 		}
 	};
@@ -37,6 +37,7 @@ export default function LogIn() {
 	const handleInputChange = (field: keyof Credentials, value: string) => {
 		setCredentials({ ...credentials, [field]: value });
 	};
+
 	return (
 		<View style={{ paddingVertical: "15%", gap: 15 }}>
 			<TextInput
@@ -47,13 +48,21 @@ export default function LogIn() {
 				onChangeText={(value) => handleInputChange("email", value)}
 			/>
 			<TextInput
+				placeholder="Full Name"
+				style={styles.textInput}
+				placeholderTextColor={"#252525"}
+				value={credentials.name}
+				onChangeText={(value) => handleInputChange("name", value)}
+			/>
+			<TextInput
 				placeholder="Password"
 				style={styles.textInput}
 				placeholderTextColor={"#252525"}
 				value={credentials.password}
 				onChangeText={(value) => handleInputChange("password", value)}
 			/>
-			<Button title="LOGIN" onPress={() => handleSubmit()} revert={false} />
+
+			<Button title="REGISTER" onPress={() => handleSubmit()} revert={false} />
 		</View>
 	);
 }

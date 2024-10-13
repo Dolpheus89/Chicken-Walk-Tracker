@@ -17,6 +17,11 @@ export const styles = StyleSheet.create({
 		minWidth: 250,
 		alignItems: "center",
 		justifyContent: "center",
+		shadowColor: "#000",
+		shadowOffset: { width: 0, height: 4 },
+		shadowOpacity: 0.25,
+		shadowRadius: 3.84,
+		elevation: 5,
 	},
 	buttonText: {
 		fontSize: 18,
