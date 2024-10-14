@@ -4,84 +4,79 @@ import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import { styles } from "@/styles/home";
 import Button from "@/components/Button";
-import { AuthContext, AuthContextType } from "@/context/AuthContext";
+import { AuthContext, type AuthContextType } from "@/context/AuthContext";
 import { API_URL } from "@/variables";
+
+interface Asset {
+	uri: string;
+	type?: string;
+	mime?: string;
+}
 
 export default function Home() {
 	const { signOut, user } = useContext(AuthContext) as AuthContextType;
-	const [profileImage, setProfileImage] = useState(
+	const [profileImage, setProfileImage] = useState<string>(
 		`${API_URL}${user?.profile_image}`,
 	);
+	const FormData = global.FormData;
 
-	const pickImage = async () => {
-		const permissionResult =
+	const uploadImage = async (): Promise<void> => {
+		try {
 			await ImagePicker.requestMediaLibraryPermissionsAsync();
-		console.log("Media Library Permission:", permissionResult);
+			const result = await ImagePicker.launchImageLibraryAsync({
+				mediaTypes: ImagePicker.MediaTypeOptions.Images,
+				allowsEditing: true,
+				aspect: [1, 1],
+				quality: 1,
+			});
 
-		if (!permissionResult.granted) {
-			alert("Permission to access camera roll is required!");
-			return;
-		}
-
-		let result = await ImagePicker.launchImageLibraryAsync({
-			mediaTypes: ImagePicker.MediaTypeOptions.Images,
-			quality: 1,
-		});
-
-		if (!result.canceled) {
-			const localUri = result.assets[0].uri;
-			const mimeType = result.assets[0].mimeType;
-
-			if (mimeType && !isValidImage(mimeType)) {
-				alert("Please select a valid image format (JPEG, PNG, GIF).");
-				return;
+			if (!result.canceled) {
+				await saveImage(result.assets[0]);
 			}
-
-			try {
-				const response = await fetch(localUri);
-				if (!response.ok) {
-					throw new Error("Failed to fetch image");
-				}
-
-				const blob = await response.blob();
-				const formData = new FormData();
-				formData.append("profile_image", blob, "profile-image.jpg");
-
-				const uploadResponse = await axios.put(
-					`${API_URL}/users/update/${user?.id}`,
-					formData,
-					{
-						headers: {
-							"Content-Type": "multipart/form-data",
-						},
-						timeout: 10000,
-					},
-				);
-
-				setProfileImage(`${API_URL}${uploadResponse.data.profile_image}`);
-			} catch (error) {
-				if (axios.isAxiosError(error)) {
-					console.error(
-						"Error uploading the image:",
-						error.response?.data || error.message,
-					);
-				} else {
-					console.error("Unexpected error:", error);
-				}
+		} catch (error) {
+			if (error instanceof Error) {
+				alert(`Error uploading image: ${error.message}`);
+			} else {
+				alert("An unknown error occurred while uploading the image.");
 			}
-		} else {
-			alert("You did not select any image.");
 		}
 	};
 
-	const isValidImage = (mimeType: string): boolean => {
-		const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
-		return allowedTypes.includes(mimeType);
+	const saveImage = async (asset: Asset): Promise<void> => {
+		setProfileImage(asset.uri);
+		await sendToBackend(asset.uri, asset.mime);
+	};
+
+	const sendToBackend = async (
+		imageUri: string,
+		mimeType?: string,
+	): Promise<void> => {
+		try {
+			const formData = new FormData();
+			const fileName = imageUri.split("/").pop() || "profile_image.png";
+			const fileData: { uri: string; type: string; name: string } = {
+				uri: imageUri,
+				type: mimeType || "image/png",
+				name: fileName,
+			};
+
+			formData.append("profile_image", fileData as unknown as Blob);
+
+			const config = {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			};
+
+			await axios.put(`${API_URL}/users/update/${user?.id}`, formData, config);
+		} catch (error) {
+			console.error("Error uploading image:", error);
+		}
 	};
 
 	return (
 		<View style={styles.homeContainer}>
-			<TouchableOpacity style={styles.imgContainer} onPress={pickImage}>
+			<TouchableOpacity style={styles.imgContainer} onPress={uploadImage}>
 				<Image
 					source={{ uri: profileImage }}
 					style={styles.imgProfile}
@@ -89,7 +84,7 @@ export default function Home() {
 				/>
 				<Text style={styles.imgText}>Bienvenue {user?.name} !</Text>
 			</TouchableOpacity>
-			<Button title="LOGOUT" revert={true} onPress={() => signOut()} />
+			<Button title="LOGOUT" revert={true} onPress={signOut} />
 		</View>
 	);
 }

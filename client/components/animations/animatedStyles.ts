@@ -1,5 +1,3 @@
-// animatedStyles.js
-
 import { Dimensions } from "react-native";
 import {
 	useSharedValue,
@@ -17,7 +15,7 @@ export const useAnimatedStyles = () => {
 		const interpolation = interpolate(
 			imagePosition.value,
 			[0, 1],
-			[-height + 20, 0],
+			[-height + 100, 0],
 		);
 		return {
 			transform: [

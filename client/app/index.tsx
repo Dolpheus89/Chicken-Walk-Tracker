@@ -5,7 +5,7 @@ import {
 	StyleSheet,
 	TouchableOpacity,
 } from "react-native";
-import { useState } from "react";
+import { useState, startTransition } from "react";
 import { styles } from "@/styles/auth";
 import Button from "@/components/Button";
 import LogIn from "@/components/LogIn";
@@ -27,13 +27,17 @@ export default function SignIn() {
 	} = useAnimatedStyles();
 
 	const loginHandler = () => {
-		imagePosition.value = 0;
-		setIsRegistering(false);
+		startTransition(() => {
+			imagePosition.value = 0;
+			setIsRegistering(false);
+		});
 	};
 
 	const registerHandler = () => {
-		imagePosition.value = 0;
-		setIsRegistering(true);
+		startTransition(() => {
+			imagePosition.value = 0;
+			setIsRegistering(true);
+		});
 	};
 
 	return (
@@ -45,7 +49,7 @@ export default function SignIn() {
 					width={Dimensions.get("window").width}
 				>
 					<Image
-						href={require("../assets/images/default.png")}
+						href={require("@/assets/images/default.png")}
 						width={Dimensions.get("window").width}
 						height={Dimensions.get("window").height - 200}
 						preserveAspectRatio="xMidYMid meet"
