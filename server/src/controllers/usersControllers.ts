@@ -81,3 +81,37 @@ export const login = async (req: Request, res: Response): Promise<void> => {
 export const logout = (req: Request, res: Response): void => {
 	res.status(200).json({ message: "Logged out successfully" });
 };
+
+export const updateProfileImg = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const fileUpload = req.file
+        ? `/images/${req.file.filename}`
+        : "/images/default.jpg";
+
+    console.log(fileUpload);
+
+    try {
+        await User.updateProfileImage(parseInt(id), fileUpload);
+        console.log("Profile image updated successfully");
+        
+        res.status(200).json({
+            message: "Profile image updated successfully",
+            profile_image: fileUpload,
+        });
+    } catch (error) {
+        console.error("Error updating profile image:", error);
+
+        
+        if (error instanceof Error) {
+            res.status(500).json({
+                message: "Error updating profile image",
+                error: error.message, 
+            });
+        } else {
+            res.status(500).json({
+                message: "Error updating profile image",
+                error: "An unknown error occurred", 
+            });
+        }
+    }
+};

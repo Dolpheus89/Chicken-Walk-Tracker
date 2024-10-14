@@ -19,7 +19,7 @@ export default function Register() {
 	});
 	const handleSubmit = async () => {
 		try {
-			await axios.post(`${API_URL}users/register`, credentials);
+			await axios.post(`${API_URL}/users/register`, credentials);
 			setCredentials({ name: "", password: "", email: "" });
 			alert("Registration successful!");
 		} catch (err) {

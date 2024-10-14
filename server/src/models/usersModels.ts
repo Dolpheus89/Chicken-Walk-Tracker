@@ -43,4 +43,19 @@ export const User = {
 			});
 		});
 	},
+
+	updateProfileImage: (id: number, newProfileImage: string): Promise<void> => {
+		const query = "UPDATE users SET profile_image = ? WHERE id = ?";
+		const params = [newProfileImage, id];
+
+		return new Promise((resolve, reject) => {
+			db.run(query, params, (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve();
+				}
+			});
+		});
+	}
 };

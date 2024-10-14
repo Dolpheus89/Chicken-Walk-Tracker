@@ -12,4 +12,6 @@ router.post(
 router.post("/login", usersControllers.login);
 router.post("/logout", usersControllers.logout);
 
+router.put("/update/:id", upload.single("profile_image"), usersControllers.updateProfileImg)
+
 export default router;

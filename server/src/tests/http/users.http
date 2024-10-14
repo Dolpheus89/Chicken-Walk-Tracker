@@ -16,3 +16,12 @@ Content-Type: application/json
     "password": "azerty",
     "email": "f.schaessens@gmail.com"
 }
+
+###
+
+Put http://localhost:3350/users/update/3
+Content-Type: application/json
+
+{
+    "profile": ""
+}

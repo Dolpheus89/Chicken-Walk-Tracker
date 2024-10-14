@@ -16,7 +16,7 @@ export default function LogIn() {
 	});
 	const handleSubmit = async () => {
 		try {
-			const response = await axios.post(`${API_URL}users/login`, credentials);
+			const response = await axios.post(`${API_URL}/users/login`, credentials);
 			const { token, userData } = response.data;
 			signIn(token, userData);
 			setUser(userData);
