@@ -29,7 +29,7 @@ export const useAnimatedStyles = () => {
 		return {
 			opacity: withTiming(imagePosition.value === 1 ? 0 : 1, { duration: 800 }),
 			transform: [
-				{ rotate: withTiming(interpolation + "deg", { duration: 1000 }) },
+				{ rotate: withTiming(`${interpolation}deg`, { duration: 1000 }) },
 			],
 		};
 	});

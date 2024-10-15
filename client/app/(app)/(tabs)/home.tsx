@@ -76,14 +76,20 @@ export default function Home() {
 
 	return (
 		<View style={styles.homeContainer}>
-			<TouchableOpacity style={styles.imgContainer} onPress={uploadImage}>
-				<Image
-					source={{ uri: profileImage }}
-					style={styles.imgProfile}
-					resizeMode="cover"
-				/>
+			<View>
+				<TouchableOpacity style={styles.imgContainer} onPress={uploadImage}>
+					<Image
+						source={{ uri: profileImage }}
+						style={styles.imgProfile}
+						resizeMode="cover"
+					/>
+				</TouchableOpacity>
 				<Text style={styles.imgText}>Bienvenue {user?.name} !</Text>
-			</TouchableOpacity>
+			</View>
+			<View>
+				<Text style={styles.imgText}>Vous avez parcouru un total de</Text>
+				<Text style={styles.imgText}>0 km</Text>
+			</View>
 			<Button title="LOGOUT" revert={true} onPress={signOut} />
 		</View>
 	);

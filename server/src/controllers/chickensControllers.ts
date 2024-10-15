@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { Chicken } from "../models/chickensModels";
 
 export const create = async (req: Request, res: Response): Promise<void> => {
@@ -18,7 +18,7 @@ export const create = async (req: Request, res: Response): Promise<void> => {
 			name: name,
 			age: age,
 			breed: breed,
-			user_id: parseInt(user_id),
+			user_id: Number.parseInt(user_id),
 			chicken_image: fileUpload,
 		});
 		res.status(201).json({ message: "Chicken added" });
@@ -36,13 +36,15 @@ export const getChickensByUserID = async (
 ): Promise<void> => {
 	const { user_id } = req.params;
 
-	if (isNaN(parseInt(user_id))) {
+	if (Number.isNaN(Number.parseInt(user_id))) {
 		res.status(400).json({ message: "Invalid ID" });
 		return;
 	}
 
 	try {
-		const chickens = await Chicken.findChickensByuserId(parseInt(user_id));
+		const chickens = await Chicken.findChickensByuserId(
+			Number.parseInt(user_id),
+		);
 		res.status(200).json(chickens);
 	} catch (error) {
 		console.error("Error fetching chickens:", error);
@@ -62,9 +64,9 @@ export const update = async (req: Request, res: Response): Promise<void> => {
 	try {
 		await Chicken.update({
 			name: name,
-			age: parseInt(age),
+			age: Number.parseInt(age),
 			breed: breed,
-			id: parseInt(id),
+			id: Number.parseInt(id),
 			chicken_image: fileUpload,
 		});
 		res.status(202).json({ message: "Chicken updated" });
@@ -81,7 +83,7 @@ export const deleteChicken = async (
 	const { id } = req.params;
 
 	try {
-		await Chicken.delete(parseInt(id));
+		await Chicken.delete(Number.parseInt(id));
 		res.status(202).json({ message: "Chicken deleted" });
 	} catch (error) {
 		console.error(error);

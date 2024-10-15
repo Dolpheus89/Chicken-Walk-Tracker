@@ -46,13 +46,17 @@ export default function Register() {
 				placeholderTextColor={"#252525"}
 				value={credentials.email}
 				onChangeText={(value) => handleInputChange("email", value)}
+				autoCapitalize="none"
+				inputMode="email"
 			/>
+
 			<TextInput
 				placeholder="Full Name"
 				style={styles.textInput}
 				placeholderTextColor={"#252525"}
 				value={credentials.name}
 				onChangeText={(value) => handleInputChange("name", value)}
+				autoCapitalize="none"
 			/>
 			<TextInput
 				placeholder="Password"
@@ -60,6 +64,8 @@ export default function Register() {
 				placeholderTextColor={"#252525"}
 				value={credentials.password}
 				onChangeText={(value) => handleInputChange("password", value)}
+				autoCapitalize="none"
+				secureTextEntry
 			/>
 
 			<Button title="REGISTER" onPress={() => handleSubmit()} revert={false} />

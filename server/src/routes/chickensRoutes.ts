@@ -4,7 +4,7 @@ import { upload } from "../middlewares/multer";
 
 const router = Router();
 
-router.get("/:id", chickensControllers.getChickensByUserID);
+router.get("/:user_id", chickensControllers.getChickensByUserID);
 
 router.post(
 	"/create/:user_id",

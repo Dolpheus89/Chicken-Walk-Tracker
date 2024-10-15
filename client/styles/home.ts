@@ -20,8 +20,10 @@ export const styles = StyleSheet.create({
 		gap: 20,
 	},
 	imgText: {
+		textAlign: "center",
 		fontSize: 24,
 		fontWeight: "600",
 		color: Colors.secondary,
+		margin: 10,
 	},
 });

@@ -58,6 +58,7 @@ export default function SignIn() {
 				<Animated.View
 					style={[styles.closeButtonContainer, closeAnimatedStyle]}
 				>
+					{/* biome-ignore lint/suspicious/noAssignInExpressions: <explanation> */}
 					<TouchableOpacity onPress={() => (imagePosition.value = 1)}>
 						<Text style={{ fontSize: 24, color: Colors.red }}>X</Text>
 					</TouchableOpacity>

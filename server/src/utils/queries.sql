@@ -6,15 +6,17 @@
     profile_image TEXT  
     );
 
-  CREATE TABLE IF NOT EXISTS chickens (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER,
-    name TEXT,
-    age INTEGER,
-    breed TEXT,
-    chicken_image TEXT,  
-    FOREIGN KEY (user_id) REFERENCES users(id)
-  );
+CREATE TABLE IF NOT EXISTS chickens (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER,
+  name TEXT,
+  age INTEGER,
+  breed TEXT,
+  chicken_image TEXT,
+  distance REAL DEFAULT 0,
+  FOREIGN KEY (user_id) REFERENCES users(id)
+);
+
 
 
   CREATE TABLE IF NOT EXISTS walks (

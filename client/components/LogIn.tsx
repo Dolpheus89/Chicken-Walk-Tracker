@@ -1,12 +1,12 @@
 import { styles } from "@/styles/global";
 import { View, TextInput } from "react-native";
 import Button from "./Button";
-import { Credentials } from "./Register";
+import type { Credentials } from "./Register";
 import { useState, useContext } from "react";
 import { router } from "expo-router";
 import axios from "axios";
 import { API_URL } from "@/variables";
-import { AuthContext, AuthContextType } from "@/context/AuthContext";
+import { AuthContext, type AuthContextType } from "@/context/AuthContext";
 
 export default function LogIn() {
 	const { signIn, setUser } = useContext(AuthContext) as AuthContextType;
@@ -45,6 +45,8 @@ export default function LogIn() {
 				placeholderTextColor={"#252525"}
 				value={credentials.email}
 				onChangeText={(value) => handleInputChange("email", value)}
+				autoCapitalize="none"
+				inputMode="email"
 			/>
 			<TextInput
 				placeholder="Password"
@@ -52,6 +54,8 @@ export default function LogIn() {
 				placeholderTextColor={"#252525"}
 				value={credentials.password}
 				onChangeText={(value) => handleInputChange("password", value)}
+				autoCapitalize="none"
+				secureTextEntry
 			/>
 			<Button title="LOGIN" onPress={() => handleSubmit()} revert={false} />
 		</View>
