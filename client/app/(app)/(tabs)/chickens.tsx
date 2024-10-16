@@ -49,7 +49,7 @@ export default function Chickens() {
 					source={require("@/assets/images/cuteChick.png")}
 					style={{ height: 200, width: 200 }}
 				/>
-				<AddChicken />
+				<AddChicken getChickens={getChickens} />
 			</View>
 		);
 	}
@@ -58,7 +58,7 @@ export default function Chickens() {
 		<ScrollView>
 			<View style={styles.allChicksHeader}>
 				<Text style={styles.allChicksTitle}> Voici ton beau poulailler</Text>
-				<AddChicken />
+				<AddChicken getChickens={getChickens} />
 			</View>
 			<View style={styles.allChicksContainer}>
 				{chickens.data.map((chicken: ChickenType) => (

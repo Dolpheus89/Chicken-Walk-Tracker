@@ -14,8 +14,14 @@ import { API_URL } from "@/variables";
 import { Colors } from "@/styles/global";
 import { styles } from "@/styles/chickens";
 import type { ChickenType } from "@/app/(app)/(tabs)/chickens";
+import { AuthContext, type AuthContextType } from "@/context/AuthContext";
 
-export default function AddChicken() {
+type ChickenProps = {
+	getChickens: () => void;
+};
+
+export default function AddChicken({ getChickens }: ChickenProps) {
+	const { user } = useContext(AuthContext) as AuthContextType;
 	const [openModal, setOpenModal] = useState(false);
 	const [chickenImage, setChickenImage] = useState(
 		`${API_URL}/images/default.jpg`,
@@ -25,6 +31,52 @@ export default function AddChicken() {
 		age: 0,
 		breed: "",
 	});
+
+	const handleSubmit = async (
+		imageUri: string,
+		mimeType?: string,
+	): Promise<void> => {
+		try {
+			const formData = new FormData();
+			const fileName = imageUri.split("/").pop() || "chicken_image.png";
+			const fileData: { uri: string; type: string; name: string } = {
+				uri: imageUri,
+				type: mimeType || "image/png",
+				name: fileName,
+			};
+
+			formData.append("chicken_image", fileData as unknown as Blob);
+			formData.append("name", newChicken.name);
+			formData.append("age", String(newChicken.age));
+			formData.append("breed", newChicken.breed);
+
+			const config = {
+				headers: {
+					"Content-Type": "multipart/form-data",
+				},
+			};
+
+			await axios.post(
+				`${API_URL}/chickens/create/${user?.id}`,
+				formData,
+				config,
+			);
+
+			setNewChicken({
+				name: "",
+				age: 0,
+				breed: "",
+			});
+
+			getChickens();
+		} catch (error) {
+			if (axios.isAxiosError(error)) {
+				console.error("Error message:", error.message);
+			} else {
+				console.error("Error:", error);
+			}
+		}
+	};
 
 	const uploadImage = async (): Promise<void> => {
 		try {
@@ -111,7 +163,7 @@ export default function AddChicken() {
 					<Button
 						title="Ajouter"
 						revert={false}
-						onPress={() => alert("coucou")}
+						onPress={() => handleSubmit(chickenImage)}
 					/>
 				</View>
 			</Modal>

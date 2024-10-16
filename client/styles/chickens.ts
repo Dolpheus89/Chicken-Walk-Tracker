@@ -52,7 +52,8 @@ export const styles = StyleSheet.create({
 		elevation: 2,
 	},
 	chickenImage: {
-		borderColor: Colors.secondary,
+		backgroundColor: Colors.secondary,
+		borderColor: Colors.yellow,
 		borderWidth: 2,
 		borderRadius: 40,
 		width: 80,
